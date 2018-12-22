@@ -10,7 +10,7 @@ const User = () => {
           <Link to='/'>Home</Link>
         </li>
         <li>
-          <Link to='/signup'>Sign Up</Link>
+          <Link to='/login'>Login</Link>
         </li>
       </ul>
     </nav>

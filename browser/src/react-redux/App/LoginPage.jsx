@@ -5,7 +5,6 @@ import setUser from './setUser.action'
 import axios from 'axios';
 
 const initialState = {
-  confirmPassword: '',
   email: '',
   password: '',
   emailError: '',
@@ -25,7 +24,7 @@ const mapStateToProps = state => {
   return { user: state.user }
 }
 
-class SignupPage extends Component {
+class loginPage extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     setUser: PropTypes.func.isRequired
@@ -39,18 +38,11 @@ class SignupPage extends Component {
     });
   }
 
-  getConfirmPasswordError = () => {
-    return (this.state.confirmPassword && this.state.password !== this.state.confirmPassword)
-      ? 'Passwords do not match.'
-      : null;
-  }
 
   enableButton = () => {
     return !(
-      this.state.confirmPassword &&
-      this.state.password &&
-      this.state.confirmPassword &&
-      this.state.password === this.state.confirmPassword
+      this.state.email &&
+      this.state.password
     )
   }
 
@@ -67,6 +59,7 @@ class SignupPage extends Component {
     axios.post('/api/user', user)
       .then(res => {
         //set current user with redux store.
+        console.log(res);
         this.props.setUser({ email: user.email });
       })
       .catch(err => {
@@ -90,61 +83,47 @@ class SignupPage extends Component {
   }
   render() {
     return (
-      <div className='signup-page'>
-        <form onSubmit={this.onSubmit} className='signup-page__form'>
-          <h1 className='signup-page__title'>Signup for Site Builder</h1>
-          <p className='signup-page__general-error'>
+      <div className='login-page'>
+        <form onSubmit={this.onSubmit} className='login-page__form'>
+          <h1 className='login-page__title'>Login</h1>
+          <p className='login-page__general-error'>
             {this.state.generalError}
           </p>
 
-          <div className='signup-page__input'>
-            <label className='signup-page__label'>
+          <div className='login-page__input'>
+            <label className='login-page__label'>
               Email
-              <span className='signup-page__error'>{this.state.emailError}</span>
+              <span className='login-page__error'>{this.state.emailError}</span>
             </label>
             <input
               name='email'
               value={this.state.email}
               type='email'
               onChange={this.handleChange}
-              className='signup-page__input-field'
+              className='login-page__input-field'
             />
           </div>
 
-          <div className='signup-page__input'>
-            <label className='signup-page__label'>
+          <div className='login-page__input'>
+            <label className='login-page__label'>
               Password
-              <span className='signup-page__error'>{this.state.passwordError}</span>
+              <span className='login-page__error'>{this.state.passwordError}</span>
             </label>
             <input
               name='password'
               value={this.state.password}
               type='password'
               onChange={this.handleChange}
-              className='signup-page__input-field'
-            />
-          </div>
-
-          <div className='signup-page__input'>
-            <label className='signup-page__label'>
-              Confirm Password
-              <span className='signup-page__error'>{this.getConfirmPasswordError()}</span>
-            </label>
-            <input
-              name='confirmPassword'
-              value={this.state.confirmPassword}
-              type='password'
-              onChange={this.handleChange}
-              className='signup-page__input-field'
+              className='login-page__input-field'
             />
           </div>
 
           <div>
             <button
               disabled={this.enableButton()}
-              className='signup-page__submit-button'
+              className='login-page__submit-button'
             >
-              Signup!
+              login
             </button>
           </div>
         </form>
@@ -153,4 +132,4 @@ class SignupPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignupPage);
+export default connect(mapStateToProps, mapDispatchToProps)(loginPage);
